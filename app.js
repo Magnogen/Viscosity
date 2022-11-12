@@ -1,6 +1,6 @@
 const { Client, EmbedBuilder, Events, GatewayIntentBits } = require('discord.js');
 const { token, prefix } = require('./config.json');
-const { embed } = require('./templates.js');
+const { error_embed, embed } = require('./templates.js');
 
 const client = new Client({
     intents: [
@@ -17,7 +17,7 @@ client.once(Events.ClientReady, c => {
 
 const funcs = {
 	ping(message, ...args) {
-		message.channel.send({ embeds: [
+		message.reply({ allowedMentions: { repliedUser: false }, embeds: [
 			embed().setAuthor({ name: 'Pong! 🏓' })
 		] }).then(async msg => {
 			const latency = msg.createdTimestamp - message.createdTimestamp;
@@ -28,16 +28,22 @@ const funcs = {
 		});
 	},
 	borf(message, ...args) {
-		console.log(m.author)
-		message.channel.send('')
+		message.reply({ allowedMentions: { repliedUser: false }, embeds: [
+			embed().setAuthor({ name: 'Hap borf! 🥳' })
+		] })
 	},
 	avatar(message, mention, ...args) {
 		if (!mention) mention = message.author;
 		else mention = get_user_from_mention(mention);
 		if (!mention) {
-			message.reply('Please use a proper mention if you want to see someone elses avatar.');
+			return message.reply({ allowedMentions: { repliedUser: false }, embeds: [
+				error_embed().setAuthor({ name: 'Please use a proper mention if you want to see someone elses avatar.' })
+			] });
 		}
-		message.reply(`${mention.username}'s avatar: ${mention.displayAvatarURL({ dynamic: true })}`)
+		const avatar = mention.displayAvatarURL({ dynamic: true });
+		message.reply({ allowedMentions: { repliedUser: false }, embeds: [
+			embed().setAuthor({ name: `${mention.username}'s avatar`, url: avatar }).setImage(avatar)
+		] })
 	}
 };
 
@@ -55,6 +61,9 @@ client.on(Events.MessageCreate, message => {
 	const { content } = message;
     if (content.startsWith(prefix)) {
 		let [command, ...args] = content.substring(prefix.length).split(/\s+/);
+		if (!(command in funcs)) message.reply({ allowedMentions: { repliedUser: false }, embeds: [
+			error_embed().setAuthor({ name: 'I dont know what that means oof' })
+		] });;
 		funcs[command](message, ...args);
 	}
 })
