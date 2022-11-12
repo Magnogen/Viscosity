@@ -14,12 +14,11 @@ client.once(Events.ClientReady, c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-
-
 const funcs = {
 	ping(message, ...args) {
 		message.channel.send({ embeds: [
 			new EmbedBuilder().setColor(0x32a851).setAuthor({name: 'Pong! 🏓'})
+			.setFooter({ text: 'Hi from Viscosity!', iconURL: 'https://magnogen.net/Viscosity/icon.png' })
 		] }).then(async msg => {
 			const latency = msg.createdTimestamp - message.createdTimestamp;
 			const API_latency = Math.round(client.ws.ping);
