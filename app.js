@@ -1,5 +1,6 @@
 const { Client, EmbedBuilder, Events, GatewayIntentBits } = require('discord.js');
 const { token, prefix } = require('./config.json');
+const { embed } = require('./templates.js');
 
 const client = new Client({
     intents: [
@@ -17,13 +18,12 @@ client.once(Events.ClientReady, c => {
 const funcs = {
 	ping(message, ...args) {
 		message.channel.send({ embeds: [
-			new EmbedBuilder().setColor(0x32a851).setAuthor({name: 'Pong! 🏓'})
-			.setFooter({ text: 'Hi from Viscosity!', iconURL: 'https://magnogen.net/Viscosity/icon.png' })
+			embed().setAuthor({ name: 'Pong! 🏓' })
 		] }).then(async msg => {
 			const latency = msg.createdTimestamp - message.createdTimestamp;
 			const API_latency = Math.round(client.ws.ping);
 			msg.edit({ embeds: [
-				EmbedBuilder.from(msg.embeds[0]).setDescription('Latency is '+latency+'ms\nAPI Latency is '+API_latency+'ms')
+				embed(msg.embeds[0]).setDescription('Latency is '+latency+'ms\nAPI Latency is '+API_latency+'ms')
 			] });
 		});
 	},
