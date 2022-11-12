@@ -1,0 +1,22 @@
+{
+  "name": "viscosity",
+  "version": "1.0.0",
+  "description": "A Discord Bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magnogen/Viscosity.git"
+  },
+  "author": "Magnogen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Magnogen/Viscosity/issues"
+  },
+  "homepage": "https://github.com/Magnogen/Viscosity#readme",
+  "dependencies": {
+    "discord.js": "^14.6.0"
+  }
+}
