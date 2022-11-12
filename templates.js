@@ -3,7 +3,18 @@ const { EmbedBuilder } = require('discord.js');
 const choose = array => array[0|(Math.random()*array.length)];
 
 const greetings = [
-    'Hi from Viscosity!'
+    'Hi from Viscosity',
+    'Hello from Viscosity',
+    'Hi from Viscosity!',
+    'Hello from Viscosity!',
+    'Hi from Viscosity :)',
+    'Hello from Viscosity :)',
+    'Hi from Viscosity :D',
+    'Hello from Viscosity :D',
+    'Hi from Viscosity! :)',
+    'Hello from Viscosity! :)',
+    'Hi from Viscosity! :D',
+    'Hello from Viscosity! :D',
 ];
 
 const greeting = () => choose(greetings);
