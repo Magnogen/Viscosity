@@ -2,20 +2,20 @@ const { EmbedBuilder } = require('discord.js');
 
 const choose = array => array[0|(Math.random()*array.length)];
 
-const hillo = () => choose(['Hi', 'Hello', 'Hey there']);
+const hillo = (append) => choose(['Hi', 'Hello', 'Hey there', ...append]);
 const excl = () => choose(['', '!']);
 const smilend = () => choose(['', ' :)', ' :D']);
 
-const greeting = () => choose([
-    hillo() + ' from Viscosity' + excl() + smilend()
+const greeting = (greets) => choose([
+    hillo(greets) + ' from Viscosity' + excl() + smilend()
 ]);
 
-const embed = (template=false) => {
-    if (template !== false) return EmbedBuilder.from(template);
+const embed = ({ template, greets }) => {
+    if (template !== undefined) return EmbedBuilder.from(template);
 
 	let embed = new EmbedBuilder();
 	embed.setColor(0x32a851);
-	embed.setFooter({ text: greeting(), iconURL: 'https://magnogen.net/Viscosity/icon.png' });
+	embed.setFooter({ text: greeting(greets), iconURL: 'https://magnogen.net/Viscosity/icon.png' });
     
     return embed;
 }

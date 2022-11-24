@@ -1,5 +1,8 @@
 # config
 config.json
+/database/*.json
+/database/users/*.json
+/database/guilds/*.json
 
 # Logs
 logs

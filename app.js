@@ -1,4 +1,5 @@
 const { Client, EmbedBuilder, Events, GatewayIntentBits } = require('discord.js');
+const { get_user, get_guild } = require('./database.js');
 const { token, prefix } = require('./config.json');
 const { error_embed, embed } = require('./templates.js');
 
@@ -11,11 +12,22 @@ const client = new Client({
 	],
 });
 
-client.once(Events.ClientReady, c => {
+client.once(Events.ClientReady, async c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
 const funcs = {
+	async me(message, mention, ...args) {
+		if (!mention) mention = message.author;
+		else mention = get_user_from_mention(mention);
+		if (!mention) {
+			return message.reply('who?');
+		}
+		message.reply( `${mention.username}:\n\`\`\`json\n${JSON.stringify( await get_user(mention.id) )}\n\`\`\`` )
+	},
+	async here(message, ...args) {
+		message.reply( `${message.guild.name}:\n\`\`\`json\n${JSON.stringify( await get_guild(message.guild.id) )}\n\`\`\`` )
+	},
 	ping(message, ...args) {
 		message.reply({ allowedMentions: { repliedUser: false }, embeds: [
 			embed().setAuthor({ name: 'Pong! 🏓' })
@@ -29,7 +41,7 @@ const funcs = {
 	},
 	borf(message, ...args) {
 		message.reply({ allowedMentions: { repliedUser: false }, embeds: [
-			embed().setAuthor({ name: 'Hap borf! 🥳' })
+			embed({ greets: ['Happy birthday'] }).setAuthor({ name: 'Hap borf! 🥳' })
 		] })
 	},
 	avatar(message, mention, ...args) {
@@ -61,12 +73,13 @@ client.on(Events.MessageCreate, message => {
 	const { content } = message;
     if (content.startsWith(prefix)) {
 		let [command, ...args] = content.substring(prefix.length).split(/\s+/);
-		if (!(command in funcs)) message.reply({ allowedMentions: { repliedUser: false }, embeds: [
+		if (!(command in funcs)) return message.reply({ allowedMentions: { repliedUser: false }, embeds: [
 			error_embed().setAuthor({ name: 'I dont know what that means oof' })
-		] });;
+		] });
 		funcs[command](message, ...args);
 	}
 })
   
 
 client.login(token);
+
